@@ -1,5 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <PackageReference Include="OneOf" Version="3.0.163" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Julius2GrowTest.Domain\Julius2GrowTest.Domain.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
