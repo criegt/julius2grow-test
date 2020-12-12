@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Julius2GrowTest.Infrastructure.Identity;
+using Julius2GrowTest.Infrastructure.S3;
+using Julius2GrowTest.WebApi.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace Julius2GrowTest.WebApi
 {
@@ -26,28 +22,33 @@ namespace Julius2GrowTest.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JwtBearerOptions>(Configuration.GetSection(JwtBearerOptions.JwtBearer));
+            services.Configure<S3Options>(Configuration.GetSection(S3Options.S3));
+
+            services.AddEntityFramework(Configuration);
+            services.AddIdentity(Configuration);
+            services.AddUseCasesAndServices();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Julius2GrowTest.WebApi", Version = "v1" });
-            });
+            services.AddCorsAndPolicy();
+            services.AddVersioning();
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Julius2GrowTest.WebApi v1"));
+                app.UseSwaggerAndConfigure(Configuration, provider);
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCorsAndPolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
