@@ -30,7 +30,7 @@ namespace Julius2GrowTest.WebApi.Controllers.V1.Posts.GetPosts
             await useCase.ExecuteAsync(userId,
                 pageIndex,
                 pageSize,
-                searchTerms)
+                searchTerms ?? string.Empty)
                 .ConfigureAwait(false);
 
             return _viewModel;
