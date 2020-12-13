@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Julius2GrowTest.Application.Services;
 using Julius2GrowTest.Domain.Posts;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,12 @@ namespace Julius2GrowTest.Infrastructure.DataAccess.Repositories
     public class PostRepository : IPostRepository
     {
         private readonly Julius2GrowTestContext _context;
+        private readonly IImageService _imageService;
 
-        public PostRepository(Julius2GrowTestContext context)
+        public PostRepository(Julius2GrowTestContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<Post> GetAsync(int id)
@@ -33,11 +36,11 @@ namespace Julius2GrowTest.Infrastructure.DataAccess.Repositories
         public async Task<PaginatedPosts> GetPaginatedByUserAsync(string userId, int pageIndex = 0, int pageSize = 10, string searchTerms = "")
         {
             var query = _context.Posts
+                .Where(p => p.ApplicationUserId == userId)
                 .Where(p => p.Title.ToLower().Contains(searchTerms.ToLower()));
 
             var count = await query.CountAsync();
             var items = await query
-                .Where(p => p.ApplicationUserId == userId)
                 .Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .Select(p => new Post
@@ -45,10 +48,11 @@ namespace Julius2GrowTest.Infrastructure.DataAccess.Repositories
                     Id = p.Id,
                     Content = p.Content,
                     CreatedAt = p.CreatedAt,
-                    Image = p.Image,
+                    Image = _imageService.CreateUri(p.Image),
                     Title = p.Title,
                     UserId = p.ApplicationUserId
                 })
+                .OrderByDescending(p => p.CreatedAt)
                 .AsNoTracking()
                 .ToListAsync();
 

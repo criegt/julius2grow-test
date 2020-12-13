@@ -11,5 +11,6 @@ namespace Julius2GrowTest.Infrastructure.S3
         public string BucketName { get; set; }
         public string AccessKeyId { get; set; }
         public string SecretKey { get; set; }
+        public string BuckerUri { get; set; }
     }
 }

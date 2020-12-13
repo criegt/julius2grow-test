@@ -67,5 +67,7 @@ namespace Julius2GrowTest.Infrastructure.S3.Services
                 return new Error<string>($"Unknown encountered on server. Message:'{e.Message}' when deleting an object");
             }
         }
+
+        public string CreateUri(string name) => $"{_options.Value.BuckerUri}{name}";
     }
 }
