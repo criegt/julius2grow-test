@@ -26,16 +26,19 @@ namespace Julius2GrowTest.Application.UseCases.Users.SignInUser
         public async Task ExecuteAsync(string userName, string password)
         {
             var result = await _userService.SignInAsync(userName, password);
+
+            if (result.IsT1)
+            {
+                _notification.Add("Detail", "User name or password are invalid");
+                _outputPort.Invalid();
+
+                return;
+            }
+
             var user = await _userRepository.GetAsync(userName);
             var (token, expiresIn) = _userService.CreateToken(user);
 
-            result.Switch(
-                ok => _outputPort.Ok(new(token, expiresIn)),
-                error =>
-                {
-                    _notification.Add("Detail", "UserName or password are invalid");
-                    _outputPort.Invalid();
-                });
+            _outputPort.Ok(new(token, expiresIn));
         }
     }
 }
