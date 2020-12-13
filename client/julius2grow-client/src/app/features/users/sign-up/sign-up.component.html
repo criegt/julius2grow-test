@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="centering text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-6 offset-3">
+            <div class="shadow-sm p-3 bg-white rounded align-middle mx-auto">
+              <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)" class="form-signup">
+                <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+                <div class="alert alert-danger" role="alert" *ngIf="error">
+                  {{this.error}}
+                </div>
+                <label for="emailInput" class="sr-only">Email</label>
+                <input type="email" id="emailInput" formControlName="email" class="form-control" placeholder="Email"
+                  required autofocus>
+                <label for="userNameInput" class="sr-only">User name</label>
+                <input type="text" id="userNameInput" formControlName="userName" class="form-control"
+                  placeholder="User name" required>
+                <label for="passwordInput" class="sr-only">Password</label>
+                <input type="password" id="passwordInput" formControlName="password" class="form-control"
+                  placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit"
+                  [disabled]="!userForm.valid || isLoading">Go</button>
+                <p class="mt-5 text-muted">You already have a account? <a [routerLink]="['/users/sign-in']">Sign in
+                    here</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

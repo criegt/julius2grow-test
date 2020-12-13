@@ -1,0 +1,23 @@
+<div class="shadow-sm p-3 bg-white rounded">
+  <div class="row">
+    <div class="col-8">
+      <h3>{{post.title}}</h3>
+    </div>
+    <div class="col-4"><button style="border-color: transparent;" class="float-right btn btn-outline-danger shadow-none" (click)="onClick()"><i class="far fa-trash-alt"></i></button></div>
+  </div>
+  <div class="row">
+    <div class="col-12 mt-n2">
+      <small class="font-weight-light text-muted">Posted {{getFormattedDate()}}</small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p>{{post.content}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <img class="rounded mx-auto d-block img-fluid" src="{{post.image}}" alt="">
+    </div>
+  </div>
+</div>
