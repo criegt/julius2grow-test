@@ -33,7 +33,7 @@ namespace Julius2GrowTest.Application.UseCases.Posts.AddPost
                 Content = content,
                 CreatedAt = DateTime.Now,
                 UserId = userId,
-                Image = $"{Guid.NewGuid()}.{extension}"
+                Image = $"{Guid.NewGuid()}{extension}"
             };
 
             var result = await _imageService.UploadAsync(post.Image, image);

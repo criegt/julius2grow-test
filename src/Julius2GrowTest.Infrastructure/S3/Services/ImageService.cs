@@ -68,6 +68,6 @@ namespace Julius2GrowTest.Infrastructure.S3.Services
             }
         }
 
-        public string CreateUri(string name) => $"{_options.Value.BuckerUri}{name}";
+        public string CreateUri(string name) => $"{_options.Value.BucketUri}{name}";
     }
 }
