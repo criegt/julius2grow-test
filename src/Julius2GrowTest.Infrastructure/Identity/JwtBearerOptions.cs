@@ -7,6 +7,6 @@
         public string SecurityKey { get; set; }
         public string Issuer { get; set; }
         public string Audience { get; set; }
-        public double ExpiryInHours { get; set; }
+        public int ExpiresIn { get; set; }
     }
 }

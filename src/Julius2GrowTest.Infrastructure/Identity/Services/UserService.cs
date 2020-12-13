@@ -30,7 +30,7 @@ namespace Julius2GrowTest.Infrastructure.Identity.Services
             _options = options;
         }
 
-        public string CreateToken(User user)
+        public (string, int) CreateToken(User user)
         {
             var claims = new[]
 {
@@ -40,7 +40,7 @@ namespace Julius2GrowTest.Infrastructure.Identity.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.SecurityKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiry = DateTime.Now.AddHours(_options.Value.ExpiryInHours);
+            var expiry = DateTime.Now.AddSeconds(_options.Value.ExpiresIn);
 
             var token = new JwtSecurityToken(
                 _options.Value.Issuer,
@@ -50,7 +50,7 @@ namespace Julius2GrowTest.Infrastructure.Identity.Services
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return (new JwtSecurityTokenHandler().WriteToken(token), _options.Value.ExpiresIn);
         }
 
         public async Task<OneOf<Success, Error<string>>> SignInAsync(string userName, string password)

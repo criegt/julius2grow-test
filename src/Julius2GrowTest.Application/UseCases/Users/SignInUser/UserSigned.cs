@@ -1,4 +1,4 @@
 ﻿namespace Julius2GrowTest.Application.UseCases.Users.SignInUser
 {
-    public record UserSigned(string Token);
+    public record UserSigned(string Token, int ExpiresIn);
 }

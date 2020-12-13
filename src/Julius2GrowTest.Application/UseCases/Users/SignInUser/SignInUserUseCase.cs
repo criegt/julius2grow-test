@@ -27,10 +27,10 @@ namespace Julius2GrowTest.Application.UseCases.Users.SignInUser
         {
             var result = await _userService.SignInAsync(userName, password);
             var user = await _userRepository.GetAsync(userName);
-            var token = _userService.CreateToken(user);
+            var (token, expiresIn) = _userService.CreateToken(user);
 
             result.Switch(
-                ok => _outputPort.Ok(new(token)),
+                ok => _outputPort.Ok(new(token, expiresIn)),
                 error =>
                 {
                     _notification.Add("Detail", "UserName or password are invalid");
