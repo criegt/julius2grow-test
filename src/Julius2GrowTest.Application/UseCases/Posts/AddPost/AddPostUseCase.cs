@@ -25,7 +25,7 @@ namespace Julius2GrowTest.Application.UseCases.Posts.AddPost
 
         public void SetOutputPort(IOutputPort outputPort) => _outputPort = outputPort;
 
-        public async Task ExecuteAsync(string userId, string title, string content, Stream image)
+        public async Task ExecuteAsync(string userId, string title, string content, Stream image, string extension)
         {
             var post = new Post
             {
@@ -33,7 +33,7 @@ namespace Julius2GrowTest.Application.UseCases.Posts.AddPost
                 Content = content,
                 CreatedAt = DateTime.Now,
                 UserId = userId,
-                Image = $"{Guid.NewGuid()}.jpg"
+                Image = $"{Guid.NewGuid()}.{extension}"
             };
 
             var result = await _imageService.UploadAsync(post.Image, image);

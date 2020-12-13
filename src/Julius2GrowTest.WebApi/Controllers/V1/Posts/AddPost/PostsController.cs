@@ -45,7 +45,8 @@ namespace Julius2GrowTest.WebApi.Controllers.V1.Posts.AddPost
             await useCase.ExecuteAsync(userId,
                 request.Title,
                 request.Content,
-                request.Image.OpenReadStream())
+                request.Image.OpenReadStream(),
+                System.IO.Path.GetExtension(request.Image.FileName))
                 .ConfigureAwait(false);
 
             return _viewModel;
