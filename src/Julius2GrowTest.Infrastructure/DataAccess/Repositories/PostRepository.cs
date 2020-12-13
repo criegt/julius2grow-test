@@ -36,7 +36,9 @@ namespace Julius2GrowTest.Infrastructure.DataAccess.Repositories
                 .Where(p => p.Title.ToLower().Contains(searchTerms.ToLower()));
 
             var count = await query.CountAsync();
-            var items = await query.Skip(pageIndex * pageSize)
+            var items = await query
+                .Where(p => p.ApplicationUserId == userId)
+                .Skip(pageIndex * pageSize)
                 .Take(pageSize)
                 .Select(p => new Post
                 {
