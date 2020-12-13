@@ -11,9 +11,9 @@ namespace Julius2GrowTest.Domain.Posts
 
         public List<Post> Posts { get; }
 
-        public bool HasPreviousPage => (PageIndex > 1);
+        public bool HasPreviousPage => (PageIndex > 0);
 
-        public bool HasNextPage => (PageIndex < TotalPages);
+        public bool HasNextPage => (PageIndex + 1 < TotalPages);
 
         public PaginatedPosts(IEnumerable<Post> posts, int count, int pageIndex, int pageSize)
         {
